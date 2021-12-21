@@ -4,9 +4,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./assets/css/style.css">
     <title>Code Quiz</title>
 </head>
 <body>
+    <header>
+        <a id="view-hs-link" href="#">View Highscores</a>
+        <span id="time">Time: <span id="timeDisplay">0</span></span>
+    </header>
+
+    <!-- Starting Page -->
+    <main>
+        <section id="starting-page" class="page">
+            <h1>Coding Quiz Challenge</h1>
+            <p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds!</p>
+            <button id="start-quiz-btn">Start Quiz</button>
+        </section>
+
+        <!-- Questions / Quiz Page -->
+
+        <section id="questions-page" class="page-hidden">
+            <h2 id="questions-display"></h2>
+            <div id="answer-list"></div>
+
+            <hr>
+
+            <div id="feedback">Correct!</div>
+        </section>
+
+        <!-- Name Input Page -->
+        <section id="name-input-page" class="page-hidden">
+            <h2>All done!</h2>
+            <p>Your final score is <span id="score-display"></span>.</p>
+
+            <br>
+
+            <p>Enter initials:
+                <input type="text" name="initials" id="initials-input">
+                <button id="submit-initials-btn">Submit</button>
+            </p>
+        </section>
+
+        <!-- Highscores Page -->
+        <section id="highscore-page" class="page-hidden">
+            <h2>Highscores</h2>
+            <div id="highscore-list"></div>
+
+            <button id="go-to-starting-page-btn">Go Back</button>
+            <button id="clear-highscores-btn">Clear Highscores</button>
+        </section>
+    </main>
     
+    <script src="./assets/js/script.js"></script>
 </body>
 </html>

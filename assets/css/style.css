@@ -1,0 +1,45 @@
+:root{
+    --main-blue:#4880FF;
+}
+
+body{
+    font-family: sans-serif;
+}
+
+.page-hidden{
+    visibility: hidden;
+}
+
+.page{
+    visibility: visible;
+}
+
+header{
+    display: flex;
+    justify-content: space-between;
+}
+
+header a{
+    color: var(--main-blue);
+    text-decoration: none;
+}
+
+/* Starting page stylings start */
+
+main{
+    padding: 0 30% 0 30%;
+    text-align: center;
+}
+
+button{
+    background-color:var(--main-blue);
+    color: white;
+    border-radius: 25%;
+    opacity: 50%;
+}
+
+button:hover{
+    opacity: 1;
+}
+
+/* End starter page stylings */
