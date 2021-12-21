@@ -3,7 +3,7 @@ var main = document.getElementsByTagName("main")
 var viewHSLink = document.getElementById("view-hs-link")
 var timeDisplay = document.getElementById("time-display")
 var startQuizBtn = document.getElementById("start-quiz-btn")
-var quizQuestion = document.getElementById("questions-display")
+var quizQuestion = document.getElementById("question-display")
 var quizAnswers = document.getElementById("answer-list")
 var feedback = document.getElementById("feedback")
 var scoreDisplay = document.getElementById("score-display")
@@ -50,3 +50,145 @@ const questions = [ // an array that holds the list of questions and their answe
     }
 ]
 
+// score tracking
+const startingTime = questions.length * 8 // the amount of time the user will be given to answer all of the questions in seconds
+
+const timePenalty = 10 // the amount of time that will be taken from the time remaining when an incorrect selection is made
+
+var remainingTime // the amount of time that is left on the clock
+var timer // the interval timer
+var score // the number of correct questions
+
+// What happens when the "Start Quiz" button gets pressed
+function init(){
+    startQuizBtn.addEventListener('click', event=> {
+        event.preventDefault()
+        displayQuestionPage()
+    })
+    quizAnswers.addEventListener('click', function(event){
+        event.preventDefault()
+        if (event.target.matches('button')){
+            var button = event.target
+            if(button.classList.contains('correct')){
+                feedback.textContent = "Correct!"
+            }
+            else {
+                feedback.textContent = "Wrong!"
+                remainingTime -= timePenalty
+            }
+            if (remainingTime > 0) displayNextQuestion()
+            else displayGetNamePage()
+        }
+    })
+    submitInitials.addEventListener('click', event=>{
+        event.preventDefault()
+        let initials = getInitials.value.toUpperCase()
+        if (initials){
+            let highscores = JSON.parse(localStorage.getItem('highscores')) || []
+
+            timestamp = Date.now()
+            highscores.push({
+                'timestamp': timestamp,
+                'score': score,
+                'initials': initials,
+                'timeRemaining': remainingTime
+            })
+
+            highscores = highscores.sort((a, b) => {
+                if (a.score != b.score) return b.score - a.score
+                if (a.timeRemaining != b.timeRemaining) return b.timeRemaining - a.timeRemaining
+                if (a.timestamp != b.timestamp) return a.timestamp - b.timestamp
+                return 0
+            })
+
+            localStorage.setItem('highscores', JSON.stringify(highscores))
+
+            displayHighScorePage()
+            initialsInput.value = ""
+        }
+    })
+    goBack.addEventListener('click', event=>{
+        event.preventDefault()
+        displayStartingPage()
+    })
+    clearHighScores.addEventListener('click', event=>{
+        event.preventDefault()
+        displayHighScorePage()
+    })
+
+    // display the starting page
+    displayStartingPage()
+}
+
+function displayPage(id){
+    main.querySelectorAll('.page').forEach(page =>{
+        if(page.id == id){
+            page.classList.remove('hidden')
+        } else {
+            page.classList.add('hidden')
+        }
+    })
+    return 4
+}
+
+// Display starting page // 
+
+function displayStartingPage(){
+    displayPage('starting-page')
+
+    clearInterval(timer)
+    remainingTime = 0
+    timeDisplay.textContent = formatSeconds(remainingTime)
+}
+
+var nextQuestionIndex // the index of questions that the user is seeing
+var randomizedQuestions // a randomly sorted clone of the array with the quiz questions
+
+// Display the questions page //
+
+function displayQuestionPage(){
+    displayPage('question-page')
+
+    // create a randomly sorted clone of the questions array to use for this quiz
+    randomizedQuestions = randomizeArray(questions)
+
+    // reset the values to back to their defaults
+    nextQuestionIndex = 0
+    score = 0
+
+    // start the timer
+    startTimer()
+
+    // setup the first question
+    displayNextQuestion()
+}
+
+// Display the next question //
+function displayNextQuestion(){
+    if (nextQuestionIndex < questions.length){
+        // get the question and answers from the array
+        const question = randomizedQuestions[nextQuestionIndex].question
+        const answers = randomizedQuestions[nextQuestionIndex].answers
+        const randomizedAnswers = randomizeArray(answers)
+        const correctAnswer = answers[randomizedQuestions[nextQuestionIndex].correct-index]
+
+        questionDisplay.textContent = question
+        quizAnswers.innerHTML = ""
+        feedback.textContent = ""
+
+        for (let i = 0; i < randomizedAnswers.length; i++) {
+            let answer = randomizedAnswers[i]
+            let button = document.createElement("button")
+            button.classList.add('answer')
+            if (answer == correctAnswer)
+                button.classList.add('correct')
+            button.textContent = `${i + 1}. ${answer}`
+            quizAnswers.appendChild(button)
+        }
+
+        nextQuestionIndex++
+    } else {
+        clearInterval(timer)
+        displayGetNamePage()
+    }
+}
