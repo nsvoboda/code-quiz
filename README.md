@@ -1,42 +1,46 @@
-# 04 Web APIs: Code Quiz
+# Coding Quiz
 
-As you proceed in your career as a web developer, you will probably be asked to complete a coding assessment, which is typically a combination of multiple-choice questions and interactive challenges. For this challenge, you will build a timed code quiz that's made up of multiple-choice questions. This app will run in the browser and feature dynamically updated HTML and CSS powered by your JavaScript code. It will also feature a clean and polished user interface and be responsive, ensuring that it adapts to multiple screen sizes.
+## Purpose
 
-## User Story
+A quiz that tests the users knowledge of basic JavaScript concepts. The user is given 8 * the # of questions in seconds to finish the quiz, and is penalized by 10s for every incorrect answer.
 
-```
-AS A coding boot camp student
-I WANT to take a timed quiz on JavaScript fundamentals that stores high scores
-SO THAT I can gauge my progress compared to my peers
-```
+High scores are saved into Local Storage and can be viewed via a link in the top left-hand corner of the page.
 
-## Acceptance Criteria
+## Table of Contents
+- [Built With](#built-with)
+- [Website](#website)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contribution](#contribution)
+- [License](#license)
 
-```
-GIVEN I am taking a code quiz
-WHEN I click the Start button
-THEN a timer starts and I am presented with a question
-WHEN I answer a question
-THEN I am presented with another question
-WHEN I answer a question incorrectly
-THEN time is subtracted from the clock
-WHEN all questions are answered or the timer reaches 0
-THEN the game is over
-WHEN the game is over
-THEN I can save my initials and score
-```
+## Built With
 
-The following animation demonstrates the application functionality:
+* HTML
+* CSS
+* JavaScript
 
-![Demonstration of the Coding Quiz Challenge.](./Assets/04-web-apis-homework-demo.gif)
+## Website
 
-### Review
+https://nsvoboda.github.io/code-quiz/
 
-You are required to submit the following for review:
+### Installation
 
-* The URL of the functional, deployed application.
+It is best practice to directly clone the respository by using the following code in your Terminal/Command Line:
 
-* The URL of the GitHub repository. Give the repository a unique name and include a README describing the project.
+git clone git@github.com:nsvoboda/code-quiz.git
 
----
-© 2021 Trilogy Education Services, LLC, a 2U, Inc. brand. Confidential and Proprietary. All Rights Reserved.
+You can also download the files into a .zip directly from the GitHub repository.
+
+### Usage
+
+Hit the "start" button and then answer a series of JavaScript concept questions before the timer runs out. Try to beat the high scores saved by the system. Try to not to get any incorrect responses or you will lose 10 seconds off of your timer.
+
+## Contribution
+Edited with ❤️ by Nate.
+
+## License
+
+&copy; 2021 Nathaniel Svoboda
+
+Licensed under the [BSD 2-Clause](LICENSE.txt)
