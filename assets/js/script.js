@@ -18,35 +18,35 @@ const questions = [ // an array that holds the list of questions and their answe
     {
         'question': 'Inside which HTML element do we put the JavaScript?',
         'answers': ['<js>', '<javascript>', '<script>', '<scripting>'],
-        'correct-index': 2
+        'correct_index': 2
     }, {
         'question': 'Commonly used data types DO NOT include:',
         'answers': ['alerts', 'booleans', 'strings', 'numbers'],
-        'correct-index': 0
+        'correct_index': 0
     }, {
         'question': 'The condition in an if / else statement is enclosed within _____.',
         'answers': ['curly brackets', 'parentheses', 'quotes', 'square brackets'],
-        'correct-index': 1
+        'correct_index': 1
     }, {
         'question': 'Arrays in JavaScript can be used to store _____.',
         'answers': ['numbers and strings', 'other arrays', 'booleans', 'all of the above'],
-        'correct-index': 3
+        'correct_index': 3
     }, {
         'question': 'String values must be enclosed within _____ when being assigned to variables.',
         'answers': ['commas', 'curly brackets', 'quotes', 'parentheses'],
-        'correct-index': 2
+        'correct_index': 2
     }, {
         'question': 'A very useful tool used during development and debugging for printing content to the debugger is:',
         'answers': ['JavaScript', 'terminal / bash', 'for loops', 'console.log'],
-        'correct-index': 3
+        'correct_index': 3
     }, {
         'question': 'DOM stands for:',
         'answers': ['Document Objective Modal', 'Doctrine  of Manliness', 'Document Object Model', 'Document Original Memorandum'],
-        'correct-index': 2
+        'correct_index': 2
     }, {
         'question': 'What is the correct place to insert a JavaScript?',
         'answers': ['The <body> section', 'The <head> section', 'The <main> section', 'Both the <head> section and the <body> section are correct'],
-        'correct-index': 0
+        'correct_index': 0
     }
 ]
 
@@ -121,7 +121,7 @@ function init(){
 }
 
 function displayPage(id){
-    main.querySelectorAll('.page').forEach(page =>{
+    document.querySelectorAll('.page').forEach(page =>{
         if(page.id == id){
             page.classList.remove('hidden')
         } else {
@@ -170,9 +170,9 @@ function displayNextQuestion(){
         const question = randomizedQuestions[nextQuestionIndex].question
         const answers = randomizedQuestions[nextQuestionIndex].answers
         const randomizedAnswers = randomizeArray(answers)
-        const correctAnswer = answers[randomizedQuestions[nextQuestionIndex].correct-index]
+        const correctAnswer = answers[randomizedQuestions[nextQuestionIndex].correct_index]
 
-        questionDisplay.textContent = question
+        quizQuestion.textContent = question
         quizAnswers.innerHTML = ""
         feedback.textContent = ""
 
@@ -192,3 +192,70 @@ function displayNextQuestion(){
         displayGetNamePage()
     }
 }
+
+// Display the get name page //
+function displayGetNamePage(){
+    displayPage('name-input-page')
+    if (remainingTime < 0) remainingTime = 0
+    timeDisplay.textContent = formatSeconds(remainingTime)
+    scoreDisplay.textContent = score
+}
+
+// Display the highscore page //
+function displayHighScorePage(){
+    displayPage('highscore-page')
+    highScoreList.innerHTML = ""
+
+    clearInterval(timer)
+
+    let highscores = JSON.parse(localStorage.getItem('highscores'))
+
+    let i = 0
+    for (const key in highscores){
+        var el = document.createElement('div')
+        let initials = highscore.initials.padEnd(3, ' ')
+        let playerScore = highscore.score.toString().padStart(3, ' ')
+        let timeRemaining = formatSeconds(highscore.timeRemaining)
+        el.textContent = `${i}. ${initials} - Score: ${playerScore} - Time: ${timeRemaining}`
+        highScoreList.appendChild(el)
+    }
+}
+
+// Take any array and return a randomly sorted clone
+function randomizeArray(array){
+    clone = [...array]
+    output = []
+
+    while (clone.length > 0){
+        let r = Math.floor(Math.random() * clone.length);
+        let i = clone.splice(r,1)[0]
+        output.push(i)
+    }
+
+    return output
+}
+
+// Start the countdown timer
+function startTimer(){
+    remainingTime = startingTime
+    timeDisplay.textContent = formatSeconds(remainingTime)
+
+    timer = setInterval(function(){
+        remainingTime--
+
+        if(remainingTime < 0){
+            clearInterval(timer)
+            displayGetNamePage()
+        } else {
+            timeDisplay.textContent = formatSeconds (remainingTime)
+        }
+    }, 1000)
+}
+
+function formatSeconds(seconds){
+    let m = Math.floor(seconds / 60).toString().padStart(2, ' ')
+    let s = (seconds % 60).toString().padStart(2, '0')
+    return `${m}:${s}`
+}
+
+init()
